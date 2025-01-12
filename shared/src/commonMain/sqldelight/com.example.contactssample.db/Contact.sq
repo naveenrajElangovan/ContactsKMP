@@ -1,0 +1,29 @@
+-- SQL file for managing contacts from a mobile device
+
+-- Create the 'contacts' table
+CREATE TABLE IF NOT EXISTS contacts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    phone_number TEXT NOT NULL UNIQUE,
+    email TEXT UNIQUE,
+    address TEXT
+);
+
+-- Insert sample data into the 'contacts' table
+
+
+-- Query to retrieve all contacts
+SELECT * FROM contacts;
+
+insertTask:
+    INSERT OR REPLACE INTO contacts(id, name, phone_number, email, address)
+    VALUES(?, ?, ?, ?, ?);
+
+deleteTask:
+DELETE FROM contacts
+WHERE id = ?;
+
+updateTask:
+UPDATE contacts
+SET name = :name, phone_number = :phone_number, email = :email, address = :address
+WHERE id = :id;
