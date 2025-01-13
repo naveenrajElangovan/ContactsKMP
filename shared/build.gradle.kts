@@ -1,6 +1,9 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsCompose)
     id("app.cash.sqldelight") version "2.0.2"
 
 }
@@ -32,8 +35,13 @@ kotlin {
             api("dev.icerock.moko:mvvm-core:0.16.1") // only ViewModel, EventsDispatcher, Dispatchers.UI
             api("dev.icerock.moko:mvvm-compose:0.16.1") // api mvvm-core, getViewModel for Compose Multi platfrom
             implementation("androidx.compose.runtime:runtime:1.5.0")
-            implementation(libs.androidx.ui.android)
-            implementation(libs.androidx.material3.android)
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.components.resources)
+
         }
 
         sourceSets.androidMain.dependencies {
@@ -59,6 +67,12 @@ kotlin {
 android {
     namespace = "com.example.contactssample"
     compileSdk = 34
+
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+
+
     defaultConfig {
         minSdk = 24
     }

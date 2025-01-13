@@ -8,6 +8,7 @@ import com.example.contactssample.ui.App
 
 
 
-@Composable fun MainView() = App(
+@Composable
+fun MainView() = App(
     DriverFactory(LocalContext.current.applicationContext).createDriver()
 ,DriverFactory(LocalContext.current.applicationContext).getContactProvider())
