@@ -13,17 +13,18 @@ CREATE TABLE IF NOT EXISTS contacts (
 
 
 -- Query to retrieve all contacts
+getContacts:
 SELECT * FROM contacts;
 
-insertTask:
+insertContact:
     INSERT OR REPLACE INTO contacts(id, name, phone_number, email, address)
     VALUES(?, ?, ?, ?, ?);
 
-deleteTask:
+deleteContact:
 DELETE FROM contacts
 WHERE id = ?;
 
-updateTask:
+updateContacts:
 UPDATE contacts
 SET name = :name, phone_number = :phone_number, email = :email, address = :address
 WHERE id = :id;
