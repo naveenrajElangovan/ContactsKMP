@@ -97,7 +97,11 @@ fun ContactScreen(viewModel: ContactViewModel,onEdit: (Contacts2) -> Unit) {
                     ) {
                         items(contacts) { contact ->
                             Row(Modifier.animateItemPlacement()) {
-                                ContactItem(viewModel, contact, onEdit = { onEdit(it) }, onFavoriteChange = { isCheked -> viewModel.updateFavourite(isCheked,contact.id)})
+                                ContactItem(viewModel, contact,
+                                    onEdit = { onEdit(it) },
+                                    onDelete = { id -> viewModel.deleteContact(id) },
+                                    onFavoriteChange = { isCheked -> viewModel.updateFavourite(isCheked,contact.id)}
+                                )
                             }
                         }
                     }

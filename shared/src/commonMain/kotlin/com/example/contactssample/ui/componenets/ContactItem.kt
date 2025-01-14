@@ -54,15 +54,27 @@ fun ContactItem(
     viewModel: ContactViewModel,
     contact: Contacts2,
     onEdit: (Contacts2) -> Unit,
+    onDelete : (Long) -> Unit,
     onFavoriteChange: (Boolean) -> Unit
 ) {
     var show by rememberSaveable { mutableStateOf(true) }
     val dismissState = rememberDismissState()
 
     LaunchedEffect(dismissState.currentValue) {
-        if (dismissState.currentValue == DismissValue.DismissedToStart) {
-            onEdit(contact)
-            dismissState.reset()
+        when(dismissState.currentValue){
+            DismissValue.DismissedToEnd -> {
+                onEdit(contact)
+                dismissState.reset()
+            }
+            DismissValue.DismissedToStart ->{
+                onDelete(contact.id)
+                dismissState.reset()
+            }
+            DismissValue.Default ->{
+
+            }
+
+            else -> {}
         }
     }
 
@@ -73,7 +85,6 @@ fun ContactItem(
     ) {
         SwipeToDismiss(
             state = dismissState,
-            directions = setOf(DismissDirection.EndToStart),
             background = {
                 DismissBackground(dismissState)
             },
@@ -81,7 +92,7 @@ fun ContactItem(
                 Card(modifier = Modifier.clip(RoundedCornerShape(0.dp)
                 ),
                     onClick = {
-
+                        onEdit(contact)
                     }) {
                     Box(
                         modifier = Modifier
@@ -135,12 +146,10 @@ fun ContactItem(
                             }
 
                             // Favorite Checkbox
-                            Checkbox(
-                                checked = contact.isFavorite,
-                                onCheckedChange = onFavoriteChange,
-                                modifier = Modifier.padding(start = 16.dp)
+                            FavouriteCheckBox(
+                                isChecked = contact.isFavorite,
+                                onCheckedChange = onFavoriteChange
                             )
-
                         }
                     }
                 }
@@ -166,10 +175,16 @@ fun DismissBackground(dismissState: DismissState) {
     ) {
 
         Spacer(modifier = Modifier)
-        if (direction == DismissDirection.EndToStart)
+        if (direction == DismissDirection.StartToEnd)
             Icon(
                 Icons.Default.Edit,
                 contentDescription = "Edit"
+            )
+        Spacer(modifier = Modifier)
+        if (direction == DismissDirection.EndToStart)
+            Icon(
+                Icons.Default.Delete,
+                contentDescription = "Delete"
             )
     }
 }

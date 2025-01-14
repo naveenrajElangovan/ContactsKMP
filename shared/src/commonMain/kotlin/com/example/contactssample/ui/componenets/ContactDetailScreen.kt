@@ -1,6 +1,8 @@
 package com.example.contactssample.ui.componenets
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +21,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,7 +39,8 @@ import com.example.contactssample.ui.ContactViewModel
 fun ContactDetails(
     contactViewModel: ContactViewModel,
     contact: Contacts2,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onDelete : (Long) -> Unit,
 ){
 
     var name by remember { mutableStateOf(contact.name) }
@@ -67,14 +72,12 @@ fun ContactDetails(
             )
 
             // Name input field
-            email?.let {
-                TextField(
-                    value = it,
-                    onValueChange = { email = it },
-                    label = { Text("Email") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+            TextField(
+                value = email.toString(),
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -102,13 +105,26 @@ fun ContactDetails(
             Spacer(modifier = Modifier.height(8.dp))
 
             // Favorite checkbox
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = isFavorite,
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                FavouriteCheckBox(
+                    isChecked = isFavorite,
                     onCheckedChange = { isFavorite = it }
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(5.dp))
                 Text("Favorite")
+
+                Spacer(modifier = Modifier.width(15.dp))
+
+                IconButton(onClick = {
+                    onDelete(contact.id)
+                    onBack()
+                }) {
+                    Icon(Icons.Default.Delete, contentDescription = "Delete")
+                }
+                Text("Delete")
+
+
+
             }
 
             Spacer(modifier = Modifier.height(16.dp))

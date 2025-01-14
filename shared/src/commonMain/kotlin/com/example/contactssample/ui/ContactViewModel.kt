@@ -73,7 +73,7 @@ class ContactViewModel(driver : SqlDriver) : ViewModel() {
     fun deleteContact(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             database.deleteContact(id)
-            contactsList.value = database.getAllContacts()
+            getContacts()
         }
     }
 

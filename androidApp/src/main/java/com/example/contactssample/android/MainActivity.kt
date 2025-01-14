@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     composable(route="detail/{contactString}", arguments = listOf(navArgument("contactString") { type = NavType.StringType })) { backStackEntry ->
                         val jsonString = backStackEntry.arguments?.getString("contactString")
                         jsonString?.let {
-                            ContactDetails(contactViewModel,JsonParser().fromJson(it,Contacts2::class.java), onBack = {navController.popBackStack()})
+                            ContactDetails(contactViewModel,JsonParser().fromJson(it,Contacts2::class.java), onBack = {navController.popBackStack()}, onDelete = {id -> contactViewModel.deleteContact(id)})
                         }
                     }
                 }
