@@ -7,12 +7,15 @@ import android.content.pm.PackageManager
 import android.provider.ContactsContract
 import com.example.contactssample.datasource.model.ContactProvider
 import com.example.contactssample.datasource.model.Contacts2
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 class AndroidContactProvider (private val context: Context) : ContactProvider {
 
-    override suspend fun getContacts(): List<Contacts2> {
-        val contactList = mutableListOf<Contacts2>()
+    override suspend fun getContacts(): MutableStateFlow<List<Contacts2>> {
+        val contactList = MutableStateFlow<List<Contacts2>>(emptyList())
+        val contacts = mutableListOf<Contacts2>()
+
         val contentResolver = context.contentResolver
 
         val cursor = contentResolver.query(
@@ -26,7 +29,8 @@ class AndroidContactProvider (private val context: Context) : ContactProvider {
         cursor?.use {
             while (it.moveToNext()) {
                 val id = it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts._ID)).toLong()
-                val name = it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME))
+                var name: String? = null
+                name = it.getString(it.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME))?:""
 
                 var phoneNumber: String? = null
                 if (it.getInt(it.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
@@ -39,7 +43,7 @@ class AndroidContactProvider (private val context: Context) : ContactProvider {
                     )
                     phoneCursor?.use { phone ->
                         if (phone.moveToNext()) {
-                            phoneNumber = phone.getString(phone.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                            phoneNumber = phone.getString(phone.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))?:""
                         }
                     }
                 }
@@ -74,10 +78,15 @@ class AndroidContactProvider (private val context: Context) : ContactProvider {
                     }
                 }
 
-
-                contactList.add(Contacts2(id, name, phoneNumber.toString(), email, address))
+                contacts.add(Contacts2(id, name, phoneNumber.toString(), email, address,"photo",false))
             }
         }
+        contacts.let {
+            contactList.value = it
+        }
+
+
+        println("Fetched ${contactList.value} contacts")
         return contactList
     }
 

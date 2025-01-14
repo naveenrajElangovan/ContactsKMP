@@ -1,3 +1,5 @@
+import kotlin.Boolean;
+
 -- SQL file for managing contacts from a mobile device
 
 -- Create the 'contacts' table
@@ -6,7 +8,9 @@ CREATE TABLE IF NOT EXISTS contacts (
     name TEXT NOT NULL,
     phone_number TEXT NOT NULL UNIQUE,
     email TEXT UNIQUE,
-    address TEXT
+    address TEXT,
+    photo TEXT,
+    isFavourite INTEGER AS Boolean NOT NULL DEFAULT 0
 );
 
 -- Insert sample data into the 'contacts' table
@@ -17,8 +21,8 @@ getContacts:
 SELECT * FROM contacts;
 
 insertContact:
-    INSERT OR REPLACE INTO contacts(id, name, phone_number, email, address)
-    VALUES(?, ?, ?, ?, ?);
+    INSERT OR REPLACE INTO contacts(id, name, phone_number, email, address,photo,isFavourite)
+    VALUES(?, ?, ?, ?, ?,?,?);
 
 deleteContact:
 DELETE FROM contacts
@@ -26,5 +30,12 @@ WHERE id = ?;
 
 updateContacts:
 UPDATE contacts
-SET name = :name, phone_number = :phone_number, email = :email, address = :address
+SET name = :name, phone_number = :phone_number, email = :email, address = :address, photo = :photo,isFavourite = :isFavourite
 WHERE id = :id;
+
+updateFavourite:
+UPDATE contacts
+SET isFavourite = ?
+WHERE id = ?;
+
+

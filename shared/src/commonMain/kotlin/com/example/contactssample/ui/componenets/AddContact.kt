@@ -8,9 +8,7 @@ import com.example.contactssample.datasource.model.Contacts2
 @Composable
 fun addContact(contacts: Contacts2,
                modifier: Modifier,
-               isCompleted: Boolean,
                onContactAdd: (Contacts2) -> Unit,
-               onTextChange: (String) -> Unit,
-               onCheckedChange: (Boolean) -> Unit,){
+               onTextChange: (String) -> Unit, ){
 
 }

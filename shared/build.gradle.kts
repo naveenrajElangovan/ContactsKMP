@@ -35,12 +35,13 @@ kotlin {
             api("dev.icerock.moko:mvvm-core:0.16.1") // only ViewModel, EventsDispatcher, Dispatchers.UI
             api("dev.icerock.moko:mvvm-compose:0.16.1") // api mvvm-core, getViewModel for Compose Multi platfrom
             implementation("androidx.compose.runtime:runtime:1.5.0")
+            implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+            implementation("com.google.code.gson:gson:2.10.1")
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.components.resources)
+            implementation(libs.androidx.navigation.compose)
 
         }
 
@@ -50,6 +51,7 @@ kotlin {
             api("androidx.core:core-ktx:1.12.0")
             api("androidx.activity:activity-compose:1.8.2")
             api("androidx.appcompat:appcompat:1.6.1")
+
         }
 
         // or iosMain, windowsMain, etc.
