@@ -11,8 +11,6 @@ import androidx.compose.ui.unit.dp
 import com.example.contactssample.datasource.DriverFactory
 import com.example.contactssample.datasource.model.Contacts2
 import com.example.contactssample.ui.componenets.ContactScreen
-import dev.icerock.moko.mvvm.compose.getViewModel
-import dev.icerock.moko.mvvm.compose.viewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -37,7 +35,12 @@ fun MyAppTheme(
 }
 
 @Composable
-fun App(contactViewModel:ContactViewModel,driverFactory: DriverFactory,onEdit: (Contacts2,) -> Unit) {
+fun App(
+    contactViewModel: ContactViewModel,
+    driverFactory: DriverFactory,
+    onEdit: (Contacts2) -> Unit,
+    onAdd : () -> Unit
+) {
     val coroutineScope = rememberCoroutineScope()
     MyAppTheme {
         coroutineScope.launch {
@@ -45,7 +48,7 @@ fun App(contactViewModel:ContactViewModel,driverFactory: DriverFactory,onEdit: (
                 try {
                     driverFactory.getLocalContacts().collect { contactList ->
                         for (contact in contactList) {
-                            if (contactViewModel.contactsList.value.isEmpty()){
+                            if (contactViewModel.contactsList.value.isEmpty()) {
                                 contactViewModel.addContact(contact)
                             }
                         }
@@ -57,6 +60,6 @@ fun App(contactViewModel:ContactViewModel,driverFactory: DriverFactory,onEdit: (
         }
     }
 
-    ContactScreen(contactViewModel, onEdit = {onEdit(it)})
+    ContactScreen(contactViewModel, onEdit = { onEdit(it)}, onAdd = onAdd)
 }
 

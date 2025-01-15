@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Checkbox
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.DismissState
 import androidx.compose.material.DismissValue
@@ -30,7 +29,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -54,23 +52,25 @@ fun ContactItem(
     viewModel: ContactViewModel,
     contact: Contacts2,
     onEdit: (Contacts2) -> Unit,
-    onDelete : (Long) -> Unit,
+    onDelete: (Long) -> Unit,
     onFavoriteChange: (Boolean) -> Unit
 ) {
     var show by rememberSaveable { mutableStateOf(true) }
     val dismissState = rememberDismissState()
 
     LaunchedEffect(dismissState.currentValue) {
-        when(dismissState.currentValue){
+        when (dismissState.currentValue) {
             DismissValue.DismissedToEnd -> {
                 onEdit(contact)
                 dismissState.reset()
             }
-            DismissValue.DismissedToStart ->{
+
+            DismissValue.DismissedToStart -> {
                 onDelete(contact.id)
                 dismissState.reset()
             }
-            DismissValue.Default ->{
+
+            DismissValue.Default -> {
 
             }
 
@@ -89,7 +89,8 @@ fun ContactItem(
                 DismissBackground(dismissState)
             },
             dismissContent = {
-                Card(modifier = Modifier.clip(RoundedCornerShape(0.dp)
+                Card(modifier = Modifier.clip(
+                    RoundedCornerShape(0.dp)
                 ),
                     onClick = {
                         onEdit(contact)
@@ -113,7 +114,8 @@ fun ContactItem(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = contact.name.firstOrNull()?.toString()?.uppercase() ?: "",
+                                    text = contact.name.firstOrNull()?.toString()?.uppercase()
+                                        ?: "",
                                     style = MaterialTheme.typography.body1.copy(color = Color.White),
                                     textAlign = TextAlign.Center
                                 )
@@ -157,6 +159,7 @@ fun ContactItem(
 
     }
 }
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DismissBackground(dismissState: DismissState) {

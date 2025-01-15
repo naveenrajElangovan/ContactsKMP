@@ -13,4 +13,4 @@ import com.example.contactssample.ui.ContactViewModel
 
 
 @Composable
-fun MainView(viewModel: ContactViewModel,onEdit: (Contacts2) -> Unit) = App(viewModel,DriverFactory(LocalContext.current.applicationContext), onEdit = {onEdit(it)})
+fun MainView(viewModel: ContactViewModel,onEdit: (Contacts2) -> Unit,onAdd : () -> Unit) = App(viewModel,DriverFactory(LocalContext.current.applicationContext), onEdit = {onEdit(it)}, onAdd = onAdd)

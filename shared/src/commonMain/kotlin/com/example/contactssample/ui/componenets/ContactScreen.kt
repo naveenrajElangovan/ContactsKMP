@@ -21,9 +21,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -36,29 +40,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.contactssample.datasource.DriverFactory
 import com.example.contactssample.datasource.model.Contacts2
 import com.example.contactssample.ui.ContactViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ContactScreen(viewModel: ContactViewModel,onEdit: (Contacts2) -> Unit) {
+fun ContactScreen(viewModel: ContactViewModel, onEdit: (Contacts2) -> Unit, onAdd: () -> Unit) {
     val queryState by viewModel.query.collectAsState()
     val contacts by viewModel.searchResults.collectAsState()
     val scrollState = rememberLazyListState()
 
-
-    if (contacts.isEmpty() && queryState.isEmpty()) {
-        Text("No Contacts")
-    } else {
-        Scaffold(
-            topBar = {
-                TopAppBar {
-                    Text("Contacts", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                }
-
+    Scaffold(
+        topBar = {
+            TopAppBar(title = {
+                Text("Contacts", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             },
-        ) { paddingValues ->
+                actions = {
+                    IconButton(onClick = onAdd) {
+                        Icon(Icons.Default.Add, contentDescription = "Add")
+                    }
+                })
+        },
+    ) { paddingValues ->
+        if (contacts.isEmpty() && queryState.isEmpty()) {
+            Text("No Contacts")
+        } else {
             Column {
                 BasicTextField(
                     value = queryState,
@@ -100,7 +106,12 @@ fun ContactScreen(viewModel: ContactViewModel,onEdit: (Contacts2) -> Unit) {
                                 ContactItem(viewModel, contact,
                                     onEdit = { onEdit(it) },
                                     onDelete = { id -> viewModel.deleteContact(id) },
-                                    onFavoriteChange = { isCheked -> viewModel.updateFavourite(isCheked,contact.id)}
+                                    onFavoriteChange = { isCheked ->
+                                        viewModel.updateFavourite(
+                                            isCheked,
+                                            contact.id
+                                        )
+                                    }
                                 )
                             }
                         }
@@ -109,9 +120,8 @@ fun ContactScreen(viewModel: ContactViewModel,onEdit: (Contacts2) -> Unit) {
 
                 }
             }
-
-
         }
+
     }
 }
 
