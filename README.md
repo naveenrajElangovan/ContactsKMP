@@ -4,7 +4,7 @@ A **Kotlin Multiplatform (KMP)** application for managing contacts with features
 ---
 
 ## 🚀 Features
-- ✅ Fetch contacts from the device (including Gmail contacts)
+- ✅ Fetch contacts from the device
 - ✅ Search contacts with real-time filtering
 - ✅ Edit and update contact details
 - ✅ Mark contacts as favorite
