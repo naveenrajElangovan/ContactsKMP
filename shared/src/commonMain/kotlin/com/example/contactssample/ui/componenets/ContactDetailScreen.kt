@@ -54,19 +54,22 @@ fun ContactDetails(
         return Random.nextLong()
     }
 
-    Scaffold(topBar = {
-        TopAppBar(title = {
-                    if(contact != null){
-                        Text("Contact Details", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                    }else{
-                        Text("Add Contacts", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+    Scaffold(
+        topBar = {
+            TopAppBar(title = {
+                if (contact != null) {
+                    Text("Contact Detail", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                } else {
+                    Text("Add Contact", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                }
+            },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                          },
-                    navigationIcon = {  IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back") }
-                    }) 
-                      },
-        ) {
+                })
+        },
+    ) {
         Surface(modifier = Modifier.background(MaterialTheme.colors.background)) {
             Column(
                 modifier = Modifier
@@ -114,7 +117,7 @@ fun ContactDetails(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Favorite checkbox
+                // Favorite checkbox and delete
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -131,14 +134,12 @@ fun ContactDetails(
 
                     contact?.let {
                         IconButton(onClick = {
-                         onDelete(it.id)
+                            onDelete(it.id)
                         }) {
                             Icon(Icons.Default.Delete, contentDescription = "Delete")
                         }
                         Text("Delete")
                     }
-
-
 
 
                 }
@@ -149,10 +150,18 @@ fun ContactDetails(
                 Button(
                     onClick = {
 
-                        if (contact == null){
-                            val localContact = Contacts2(generateId(),name,phoneNumber,email,address,"photo",isFavorite)
+                        if (contact == null) {
+                            val localContact = Contacts2(
+                                generateId(),
+                                name,
+                                phoneNumber,
+                                email,
+                                address,
+                                "photo",
+                                isFavorite
+                            )
                             contactViewModel.addContact(localContact)
-                        }else{
+                        } else {
                             val newContact =
                                 Contacts2(
                                     contact.id, name, phoneNumber, email, address, contact.photo,
@@ -165,9 +174,9 @@ fun ContactDetails(
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
-                    if (contact == null){
+                    if (contact == null) {
                         Text("Add")
-                    }else {
+                    } else {
                         Text("Save")
                     }
                 }

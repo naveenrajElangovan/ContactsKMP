@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -45,10 +46,16 @@ import com.example.contactssample.ui.ContactViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ContactScreen(viewModel: ContactViewModel, onEdit: (Contacts2) -> Unit, onAdd: () -> Unit) {
-    val queryState by viewModel.query.collectAsState()
-    val contacts by viewModel.searchResults.collectAsState()
+fun ContactScreen(
+    contactViewModel: ContactViewModel,
+    onEdit: (Contacts2) -> Unit,
+    onAdd: () -> Unit
+) {
+    val queryState by contactViewModel.query.collectAsState()
+    val contacts by contactViewModel.searchResults.collectAsState()
     val scrollState = rememberLazyListState()
+    val isLoading by contactViewModel.isLoading.collectAsState()
+
 
     Scaffold(
         topBar = {
@@ -56,19 +63,35 @@ fun ContactScreen(viewModel: ContactViewModel, onEdit: (Contacts2) -> Unit, onAd
                 Text("Contacts", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             },
                 actions = {
-                    IconButton(onClick = onAdd) {
-                        Icon(Icons.Default.Add, contentDescription = "Add")
+                    if (!isLoading) {
+                        IconButton(onClick = onAdd) {
+                            Icon(Icons.Default.Add, contentDescription = "Add")
+                        }
                     }
+
                 })
         },
     ) { paddingValues ->
-        if (contacts.isEmpty() && queryState.isEmpty()) {
-            Text("No Contacts")
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                    CircularProgressIndicator()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("Loading the contacts from local")
+
+                }
+
+
+            }
         } else {
             Column {
                 BasicTextField(
                     value = queryState,
-                    onValueChange = { viewModel.updateQuery(it) },
+                    onValueChange = { contactViewModel.updateQuery(it) },
                     maxLines = 1,
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                     modifier = Modifier.fillMaxWidth()
@@ -103,11 +126,11 @@ fun ContactScreen(viewModel: ContactViewModel, onEdit: (Contacts2) -> Unit, onAd
                     ) {
                         items(contacts) { contact ->
                             Row(Modifier.animateItemPlacement()) {
-                                ContactItem(viewModel, contact,
+                                ContactItem(contactViewModel, contact,
                                     onEdit = { onEdit(it) },
-                                    onDelete = { id -> viewModel.deleteContact(id) },
+                                    onDelete = { id -> contactViewModel.deleteContact(id) },
                                     onFavoriteChange = { isCheked ->
-                                        viewModel.updateFavourite(
+                                        contactViewModel.updateFavourite(
                                             isCheked,
                                             contact.id
                                         )
