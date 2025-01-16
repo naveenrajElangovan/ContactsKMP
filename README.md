@@ -24,7 +24,6 @@ A **Kotlin Multiplatform (KMP)** application for managing contacts with features
 - **Navigation Compose** - Jetpack Compose Navigation
 - **Permissions Handling** - Request runtime permissions
 - **Gson** - JSON parsing
-- **Coil** - Image loading
 
 ---
 
@@ -68,13 +67,12 @@ Add the following dependencies in **shared/build.gradle.kts**:
 
 ```kotlin
 dependencies {
-    implementation("dev.icerock.moko:mvvm-core:0.16.1")  // MVVM
-    implementation("dev.icerock.moko:mvvm-livedata:0.16.1")
-    implementation("com.squareup.sqldelight:runtime:1.5.5") // SQLDelight
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") // Coroutines
-    implementation("androidx.compose.material3:material3:1.1.2") // Compose Material3
-    implementation("androidx.navigation:navigation-compose:2.6.0") // Compose Navigation
-    implementation("com.google.code.gson:gson:2.10") // Gson for JSON Parsing
+    implementation(libs.android.sql.delight.coroutines.extensions)
+            api(libs.mvvm.core) // only ViewModel, EventsDispatcher, Dispatchers.UI
+            api(libs.mvvm.compose) // api mvvm-core, getViewModel for Compose Multi platfrom
+            implementation(libs.androidx.runtime)
+            implementation (libs.kotlinx.serialization.json)
+            implementation(libs.gson)
 }
 ```
 
