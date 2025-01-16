@@ -8,8 +8,8 @@ A **Kotlin Multiplatform (KMP)** application for managing contacts with features
 - ✅ Search contacts with real-time filtering
 - ✅ Edit and update contact details
 - ✅ Mark contacts as favorite
-- ✅ Delete contacts with swipe-to-dismiss
-- ✅ Capture and update contact photos from Camera/Gallery
+- ✅ Delete contacts with swipe-to-right
+- ✅ Edit contacts with swipe-to-left
 - ✅ Jetpack Compose UI with Material 3
 - ✅ KMP shared logic for Android and iOS
 
