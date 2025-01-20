@@ -1,10 +1,8 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
-    id("app.cash.sqldelight") version "2.0.2"
+    alias(libs.plugins.androidSqlDelight)
 
 }
 
@@ -30,13 +28,12 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation("app.cash.sqldelight:coroutines-extensions:2.0.2")
-           // implementation(compose.material)
-            api("dev.icerock.moko:mvvm-core:0.16.1") // only ViewModel, EventsDispatcher, Dispatchers.UI
-            api("dev.icerock.moko:mvvm-compose:0.16.1") // api mvvm-core, getViewModel for Compose Multi platfrom
-            implementation("androidx.compose.runtime:runtime:1.5.0")
-            implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-            implementation("com.google.code.gson:gson:2.10.1")
+            implementation(libs.android.sql.delight.coroutines.extensions)
+            api(libs.mvvm.core) // only ViewModel, EventsDispatcher, Dispatchers.UI
+            api(libs.mvvm.compose) // api mvvm-core, getViewModel for Compose Multi platfrom
+            implementation(libs.androidx.runtime)
+            implementation (libs.kotlinx.serialization.json)
+            implementation(libs.gson)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -46,17 +43,16 @@ kotlin {
         }
 
         sourceSets.androidMain.dependencies {
-
-            implementation("app.cash.sqldelight:android-driver:2.0.2")
-            api("androidx.core:core-ktx:1.12.0")
-            api("androidx.activity:activity-compose:1.8.2")
-            api("androidx.appcompat:appcompat:1.6.1")
+            implementation(libs.android.sql.delight.driver)
+            api(libs.androidx.core.ktx)
+            api(libs.androidx.activity.compose)
+            api(libs.androidx.appcompat)
 
         }
 
         // or iosMain, windowsMain, etc.
         sourceSets.nativeMain.dependencies {
-            implementation("app.cash.sqldelight:native-driver:2.0.2")
+            implementation(libs.sql.delight.native.driver)
         }
 
 

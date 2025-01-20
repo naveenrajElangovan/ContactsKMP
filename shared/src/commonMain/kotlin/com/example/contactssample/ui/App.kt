@@ -11,24 +11,6 @@ import com.example.contactssample.datasource.DriverFactory
 import com.example.contactssample.datasource.model.Contacts2
 import com.example.contactssample.ui.componenets.ContactScreen
 
-
-@Composable
-fun MyAppTheme(
-    content: @Composable () -> Unit,
-) {
-    MaterialTheme(
-        shapes = MaterialTheme.shapes.copy(
-            small = AbsoluteCutCornerShape(0.dp),
-            medium = AbsoluteCutCornerShape(0.dp),
-            large = AbsoluteCutCornerShape(0.dp)
-        )
-    ) {
-        Surface(modifier = Modifier.background(MaterialTheme.colors.background)) {
-            content()
-        }
-    }
-}
-
 @Composable
 fun App(
     contactViewModel: ContactViewModel,

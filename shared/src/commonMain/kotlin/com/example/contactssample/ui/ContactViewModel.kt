@@ -49,7 +49,7 @@ class ContactViewModel(driver: DriverFactory) : ViewModel() {
         )
 
     init {
-        getContacts(driver)
+        getContacts(driverLocal)
 
     }
 

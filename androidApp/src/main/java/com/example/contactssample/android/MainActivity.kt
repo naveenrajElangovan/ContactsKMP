@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                             navController.navigate("detail/$contactString")
                         },
                         onAdd = {
-                            val contactString = "Navigate to add"
+                            val contactString = getString(R.string.navigate_to_add)
                             navController.navigate("detail/$contactString")
 
                         })
@@ -81,12 +81,13 @@ class MainActivity : ComponentActivity() {
                     arguments = listOf(navArgument("contactString") { type = NavType.StringType })
                 ) { backStackEntry ->
                     val jsonString = backStackEntry.arguments?.getString("contactString")
-                    if (jsonString == "Navigate to add") {
+
+                    if (jsonString == getString(R.string.navigate_to_add)) {
                         ContactDetails(
                             contactViewModel,
                             null,
                             onBack = { navController.popBackStack() },
-                            onDelete = { id -> contactViewModel.deleteContact(id) })
+                            onDelete = {})
                     } else {
                         ContactDetails(contactViewModel,
                             jsonString?.let { JsonParser().fromJson(it, Contacts2::class.java) },

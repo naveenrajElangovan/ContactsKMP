@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigate_to_add">Navigate to add</string>
+    <string name="contact">Contact</string>
+    <string name="contact_string">contactString</string>
+    <string name="contact_permission">android.permission.READ_CONTACTS</string>
+</resources>

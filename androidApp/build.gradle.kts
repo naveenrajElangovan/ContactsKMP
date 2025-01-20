@@ -45,10 +45,10 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.startup.runtime)
-    implementation ("androidx.core:core-ktx:1.10.1")
+    implementation (libs.androidx.core.ktx)
     implementation(libs.androidx.navigation.compose)
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation(libs.gson)
+    implementation (libs.kotlinx.serialization.json)
     debugImplementation(libs.compose.ui.tooling)
 
 }
